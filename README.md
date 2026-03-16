@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carol & Smith PLLC</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
+        
+        .font-serif { font-family: 'Marcellus', 'Georgia', serif; }
+        .font-sans { font-family: 'Century Gothic', sans-serif; }
+        
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    <!-- Import Map for React & Dependencies -->
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.2.0",
+            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+            "lucide-react": "https://esm.sh/lucide-react@0.292.0"
+        }
+    }
+    </script>
+
+    <!-- Babel for in-browser JSX compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-white font-sans text-gray-800">
+    <div id="root"></div>
+
+    <!-- React Application Code -->
+    <script type="text/babel" data-type="module">
+        import React, { useState, useEffect } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import { 
+          Menu, X, ChevronRight, Scale, Gavel, Landmark, 
+          ArrowRight, User, FileText, Upload, CreditCard, 
+          Settings, LogOut, CheckCircle, Clock, Eye
+        } from 'lucide-react';
+
+        // --- ASSETS & PHOTOS ---
+        // Replace these URLs with your preferred image links
+        const ASSETS = {
+          logoWhite: "https://assets.zyrosite.com/AE0PjzJp4DHEnv62/carol-and-smith-logo-aNbXri528ye24OmQ.png",
+          logoBlack: "https://assets.zyrosite.com/AE0PjzJp4DHEnv62/carol-and-smith-logo-black-I5LFlwRghPHE9Afb.png",
+          heroImage: "https://assets.zyrosite.com/AE0PjzJp4DHEnv62/carol-and-smith-dPT2untBp6CXmt73.png",
+          partnersHomeImage: "https://assets.zyrosite.com/AE0PjzJp4DHEnv62/carol-and-smith-client-aJ4Z6yCKOnhWNZCN.png",
+          aboutTeamImage: "https://assets.zyrosite.com/AE0PjzJp4DHEnv62/carol-and-smith-talking-eMxvMhlC6zDr86Rg.png",
+          ctaBackground: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80"
+        };
+
+        // --- THEME & CONSTANTS ---
+        const THEME = {
+          navy: '#0d131f',
+          black: '#0D0E10',
+          beige: '#e8e4db',
+          beigeLight: '#f5f4f0',
+          gold: '#d3b68f',
+        };
+
+        const SERVICES = [
+          { id: 'real-estate', title: 'Real Estate Law', icon: Landmark, desc: 'We specialize in all aspects of real estate law, from buying and selling property to drafting complex commercial contracts.' },
+          { id: 'corporate', title: 'Corporate Counsel', icon: Scale, desc: 'Tailored legal strategies for businesses, including entity formation, mergers, acquisitions, and compliance.' },
+          { id: 'litigation', title: 'Civil Litigation', icon: Gavel, desc: 'Aggressive and strategic representation in civil disputes, ensuring your rights and assets are protected.' }
+        ];
+
+        // --- MAIN APP COMPONENT ---
+        function App() {
+          const [currentPage, setCurrentPage] = useState('home');
+          const [currentServiceId, setCurrentServiceId] = useState(null);
+          const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+          const [user, setUser] = useState(null);
+
+          useEffect(() => {
+            window.scrollTo(0, 0);
+          }, [currentPage, currentServiceId]);
+
+          const navigate = (page, serviceId = null) => {
+            setCurrentPage(page);
+            setCurrentServiceId(serviceId);
+            setIsMobileMenuOpen(false);
+          };
+
+          const handleLogin = (e) => {
+            e.preventDefault();
+            setUser({ name: 'Jonathan Doe', email: 'jonathan.doe@example.com' });
+            navigate('portal-cases');
+          };
+
+          const handleLogout = () => {
+            setUser(null);
+            navigate('home');
+          };
+
+          // --- LAYOUT COMPONENTS ---
+          const Navbar = () => (
+            <nav className="bg-[#0d131f] text-white border-b border-[#2a3441] sticky top-0 z-50">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between h-28 items-center">
+                  
+                  {/* Logo */}
+                  <div className="flex-shrink-0 cursor-pointer h-full flex items-center py-1" onClick={() => navigate('home')}>
+                     <img src={ASSETS.logoWhite} alt="Carol & Smith PLLC" className="h-24 md:h-[6.5rem] object-contain" />
+                  </div>
+
+                  {/* Desktop Menu */}
+                  <div className="hidden md:flex items-center space-x-8">
+                    <div className="flex space-x-6 text-sm tracking-widest uppercase font-light text-gray-300">
+                      <button onClick={() => navigate('home')} className={`hover:text-white transition-colors ${currentPage === 'home' ? 'border-b border-[#d3b68f] text-white' : ''}`}>Home</button>
+                      <button onClick={() => navigate('about')} className={`hover:text-white transition-colors ${currentPage === 'about' ? 'border-b border-[#d3b68f] text-white' : ''}`}>Our Team</button>
+                      <button onClick={() => navigate('services')} className={`hover:text-white transition-colors ${currentPage === 'services' ? 'border-b border-[#d3b68f] text-white' : ''}`}>Services</button>
+                      <button onClick={() => navigate('contact')} className={`hover:text-white transition-colors ${currentPage === 'contact' ? 'border-b border-[#d3b68f] text-white' : ''}`}>Contact</button>
+                    </div>
+                    
+                    <div className="flex items-center space-x-4 pl-4 border-l border-[#2a3441]">
+                      {user ? (
+                        <button onClick={() => navigate('portal-cases')} className="text-sm tracking-widest uppercase text-[#d3b68f] hover:text-white transition-colors flex items-center gap-2">
+                          <User size={16} /> Portal
+                        </button>
+                      ) : (
+                        <button onClick={() => navigate('login')} className="text-sm tracking-widest uppercase text-gray-400 hover:text-white transition-colors">
+                          Client Login
+                        </button>
+                      )}
+                      <button onClick={() => navigate('contact')} className="bg-transparent border border-[#d3b68f] text-[#d3b68f] hover:bg-[#d3b68f] hover:text-[#0d131f] transition-colors px-6 py-2 text-xs tracking-widest uppercase rounded-none">
+                        Book Consultation
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Mobile menu button */}
+                  <div className="md:hidden flex items-center">
+                    <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white hover:text-[#d3b68f]">
+                      {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Menu */}
+              {isMobileMenuOpen && (
+                <div className="md:hidden bg-[#0d131f] border-t border-[#2a3441] py-4">
+                  <div className="flex flex-col space-y-4 px-6 text-sm tracking-widest uppercase text-gray-300">
+                    <button onClick={() => navigate('home')} className="text-left hover:text-white">Home</button>
+                    <button onClick={() => navigate('about')} className="text-left hover:text-white">Our Team</button>
+                    <button onClick={() => navigate('services')} className="text-left hover:text-white">Services</button>
+                    <button onClick={() => navigate('contact')} className="text-left hover:text-white">Contact</button>
+                    <hr className="border-[#2a3441]" />
+                    {user ? (
+                      <button onClick={() => navigate('portal-cases')} className="text-left text-[#d3b68f]">Client Portal</button>
+                    ) : (
+                      <button onClick={() => navigate('login')} className="text-left text-[#d3b68f]">Client Login</button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </nav>
+          );
+
+          const Footer = () => (
+            <footer className="bg-[#0D0E10] text-gray-400 py-16 border-t border-[#2a3441]">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div className="col-span-1 md:col-span-2">
+                  <img src={ASSETS.logoWhite} alt="Carol & Smith PLLC" className="h-12 md:h-14 object-contain mb-6" />
+                  <p className="text-sm font-light max-w-sm">
+                    Providing tailored, elite legal counsel with unyielding dedication. We specialize in real estate, corporate, and civil litigation.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-white tracking-widest uppercase text-sm mb-6 font-serif">Quick Links</h4>
+                  <ul className="space-y-3 text-sm font-light">
+                    <li><button onClick={() => navigate('home')} className="hover:text-[#d3b68f] transition-colors">Home</button></li>
+                    <li><button onClick={() => navigate('about')} className="hover:text-[#d3b68f] transition-colors">Our Team</button></li>
+                    <li><button onClick={() => navigate('services')} className="hover:text-[#d3b68f] transition-colors">Services</button></li>
+                    <li><button onClick={() => navigate('login')} className="hover:text-[#d3b68f] transition-colors">Client Portal</button></li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-white tracking-widest uppercase text-sm mb-6 font-serif">Contact Us</h4>
+                  <ul className="space-y-3 text-sm font-light">
+                    <li>1200 Legal Avenue, Suite 400</li>
+                    <li>New York, NY 10001</li>
+                    <li className="pt-2">contact@carolsmithpllc.com</li>
+                    <li>(555) 123-4567</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-[#1a1c21] text-xs flex flex-col md:flex-row justify-between items-center text-gray-600">
+                <p>&copy; 2026 Carol & Smith PLLC. All Rights Reserved.</p>
+                <div className="space-x-4 mt-4 md:mt-0">
+                  <span className="cursor-pointer hover:text-gray-300">Privacy Policy</span>
+                  <span className="cursor-pointer hover:text-gray-300">Terms of Service</span>
+                </div>
+              </div>
+            </footer>
+          );
+
+          // --- PAGE COMPONENTS ---
+
+          const HomePage = () => (
+            <div className="animate-fade-in">
+              {/* Hero Section */}
+              <section className="relative h-[80vh] flex items-center bg-[#f5f4f0]">
+                <div className="absolute inset-0 w-1/2 hidden md:block z-0 right-0 ml-auto">
+                   <img src={ASSETS.heroImage} alt="Carol and Smith" className="w-full h-full object-cover" />
+                   <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#f5f4f0] to-transparent"></div>
+                </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+                  <div className="max-w-xl">
+                    <div className="mb-6 flex items-center gap-4">
+                      <div className="w-12 h-px bg-[#d3b68f]"></div>
+                      <span className="tracking-widest uppercase text-xs text-[#d3b68f] font-semibold">Excellence in Practice</span>
+                    </div>
+                    <h1 className="text-5xl md:text-6xl font-serif text-[#0d131f] mb-6 leading-tight">
+                      PROVIDING TAILORED <br/>LEGAL COUNSEL
+                    </h1>
+                    <p className="text-gray-600 mb-10 text-sm md:text-base leading-relaxed font-light">
+                      We specialize in all aspects of real estate and corporate law, from buying and selling property to drafting complex contracts and navigating civil litigation with precision and care.
+                    </p>
+                    <button onClick={() => navigate('about')} className="bg-[#0d131f] text-white px-8 py-4 text-xs tracking-widest uppercase rounded-none hover:bg-[#1a2538] transition-colors">
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              {/* Services Grid Section */}
+              <section className="py-24 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16">
+                  <h2 className="text-3xl font-serif text-[#0d131f] tracking-wide">OUR SERVICES</h2>
+                  <div className="w-16 h-px bg-[#d3b68f] mx-auto mt-6"></div>
+                </div>
+                
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {SERVICES.map((service, idx) => {
+                    const Icon = service.icon;
+                    return (
+                      <div key={idx} className="bg-[#f5f4f0] p-10 aspect-square flex flex-col justify-between group cursor-pointer border border-transparent hover:border-[#d3b68f] transition-all" onClick={() => navigate('serviceDetail', service.id)}>
+                        <div className="text-[#d3b68f] opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-500 origin-left">
+                          <Icon size={120} strokeWidth={0.5} />
+                        </div>
+                        <div className="flex justify-between items-end">
+                          <h3 className="font-serif text-2xl text-[#0d131f] leading-snug w-2/3">{service.title}</h3>
+                          <div className="w-10 h-10 border border-[#0d131f] rounded-full flex items-center justify-center text-[#0d131f] group-hover:bg-[#0d131f] group-hover:text-white transition-colors">
+                            <ArrowRight size={16} strokeWidth={1} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+
+              {/* Team / About Preview */}
+              <section className="py-24 bg-[#0d131f] text-white border-y border-[#2a3441]">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-16">
+                  <div className="w-full md:w-1/2 aspect-square relative">
+                    <img src={ASSETS.partnersHomeImage} alt="Lawyers" className="w-full h-full object-cover grayscale opacity-80" />
+                    <div className="absolute inset-0 border border-[#d3b68f] m-6 pointer-events-none"></div>
+                  </div>
+                  <div className="w-full md:w-1/2">
+                     <h2 className="text-4xl font-serif mb-6 text-white">THE PARTNERS</h2>
+                     <p className="text-gray-400 font-light mb-8 leading-relaxed">
+                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut hendrerit ipsum quam, quis convallis tellus gravida ut. Donec commodo interdum magna. Our partners bring over 40 years of combined experience to the table, ensuring that every case is handled with the utmost precision and expertise.
+                     </p>
+                     <div className="flex gap-4">
+                        <div className="w-12 h-12 rounded-full bg-[#1a2538] border border-[#d3b68f]"></div>
+                        <div className="w-12 h-12 rounded-full bg-[#1a2538] border border-[#d3b68f]"></div>
+                     </div>
+                     <button onClick={() => navigate('about')} className="mt-10 bg-transparent border border-[#d3b68f] text-[#d3b68f] hover:bg-[#d3b68f] hover:text-[#0d131f] transition-colors px-8 py-3 text-xs tracking-widest uppercase rounded-none">
+                      Meet The Team
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              {/* CTA Section */}
+              <section className="relative py-32 flex items-center justify-center text-center">
+                <div className="absolute inset-0">
+                  <img src={ASSETS.ctaBackground} alt="Writing" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-[#0d131f] opacity-80"></div>
+                </div>
+                <div className="relative z-10 max-w-2xl px-4">
+                  <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">BOOK A FREE 15-MIN CONSULTATION</h2>
+                  <p className="text-gray-300 font-light mb-10">We specialize in all aspects of real estate law, from buying and selling property to drafting contracts.</p>
+                  <button onClick={() => navigate('contact')} className="bg-[#0d131f] border border-[#2a3441] text-white px-8 py-3 text-xs tracking-widest uppercase rounded-none hover:border-[#d3b68f] transition-colors">
+                    Learn More
+                  </button>
+                </div>
+              </section>
+            </div>
+          );
+
+          const AboutPage = () => (
+            <div className="animate-fade-in bg-white pb-24">
+              <div className="bg-[#f5f4f0] py-24 border-b border-gray-200">
+                <div className="max-w-4xl mx-auto px-4 text-center">
+                  <h1 className="text-5xl font-serif text-[#0d131f] mb-6">ABOUT THE FIRM</h1>
+                  <p className="text-gray-500 uppercase tracking-widest text-xs">A legacy of uncompromising excellence.</p>
+                </div>
+              </div>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 flex flex-col md:flex-row gap-16">
+                <div className="w-full md:w-5/12">
+                  <img src={ASSETS.aboutTeamImage} alt="Our Team" className="w-full aspect-square object-cover" />
+                </div>
+                <div className="w-full md:w-7/12 flex flex-col justify-center">
+                  <div className="mb-10 pl-6 border-l-2 border-[#d3b68f]">
+                    <p className="font-serif text-2xl md:text-3xl text-[#0d131f] italic leading-snug">
+                      "With decades of seasoned precision, we offer the unyielding advocacy and personal dedication required to protect your most vital interests."
+                    </p>
+                  </div>
+                  <p className="text-gray-600 font-light mb-6 leading-relaxed">
+                    Founded on the principles of integrity, diligence, and unwavering advocacy, Carol & Smith PLLC has established itself as a premier boutique law firm. We understand that legal matters, whether a complex corporate merger or a sensitive personal dispute, require not just legal knowledge, but strategic foresight and a tailored approach.
+                  </p>
+                  <p className="text-gray-600 font-light mb-10 leading-relaxed">
+                    Our firm deliberately maintains a select caseload to ensure that every client receives the direct attention of our partners. When you hire Carol & Smith, you are not handed off to junior associates; you are guided by seasoned litigators and negotiators who view your success as our own.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-8 border-t border-gray-200 pt-8">
+                    <div>
+                      <h4 className="font-serif text-xl mb-2">Daniel Carol, Esq.</h4>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Managing Partner</p>
+                      <p className="text-sm text-gray-600 font-light">Specializing in high-stakes civil litigation and corporate structuring.</p>
+                    </div>
+                    <div>
+                      <h4 className="font-serif text-xl mb-2">Melissa Smith, Esq.</h4>
+                      <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Senior Partner</p>
+                      <p className="text-sm text-gray-600 font-light">Expertise in commercial real estate transactions and dispute resolution.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+
+          const ServiceDetailPage = () => {
+            const service = SERVICES.find(s => s.id === currentServiceId) || SERVICES[0];
+            const Icon = service.icon;
+
+            return (
+              <div className="animate-fade-in bg-white pb-24">
+                <div className="bg-[#0d131f] py-32 relative overflow-hidden">
+                  <div className="absolute top-[-50px] right-[-50px] opacity-10 text-[#2a3441]">
+                    <Icon size={400} strokeWidth={0.5} />
+                  </div>
+                  <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-[#1a2538] border border-[#d3b68f] mb-8 text-[#d3b68f]">
+                      <Icon size={32} strokeWidth={1} />
+                    </div>
+                    <h1 className="text-5xl font-serif text-white mb-6">{service.title}</h1>
+                    <div className="w-16 h-px bg-[#d3b68f] mx-auto"></div>
+                  </div>
+                </div>
+
+                <div className="max-w-4xl mx-auto px-4 mt-20">
+                  <p className="text-xl text-gray-600 font-light leading-relaxed mb-8 text-center">
+                    {service.desc}
+                  </p>
+                  <p className="text-gray-600 font-light leading-relaxed mb-6">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat ante, pellentesque at bibendum nec, posuere congue lacus.
+                  </p>
+                  <p className="text-gray-600 font-light leading-relaxed mb-12">
+                    Pellentesque in imperdiet metus. Aenean sed dictum libero, eget mattis est. In in tristique dolor. In eleifend neque ipsum, eu interdum tortor lacinia eu. Quisque congue elementum est non tempor. 
+                  </p>
+
+                  <div className="bg-[#f5f4f0] p-10 border border-gray-200 text-center">
+                    <h3 className="font-serif text-2xl text-[#0d131f] mb-4">Require Assistance with {service.title}?</h3>
+                    <p className="text-gray-600 font-light mb-8">Schedule a confidential consultation with our specialized attorneys today.</p>
+                    <button onClick={() => navigate('contact')} className="bg-[#0d131f] text-white px-8 py-3 text-xs tracking-widest uppercase rounded-none hover:bg-[#d3b68f] hover:text-[#0d131f] transition-colors">
+                      Book Consultation
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          };
+
+          const ContactPage = () => (
+            <div className="animate-fade-in bg-white pb-24">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div>
+                  <h1 className="text-5xl font-serif text-[#0d131f] mb-6">CONTACT US</h1>
+                  <div className="w-12 h-px bg-[#d3b68f] mb-8"></div>
+                  <p className="text-gray-600 font-light mb-10">
+                    To inquire about our services or schedule a consultation, please contact our office using the form below or via phone. We assure strict confidentiality for all communications.
+                  </p>
+
+                  <div className="space-y-6 text-sm font-light text-gray-600 mb-12">
+                    <div>
+                      <strong className="block text-[#0d131f] uppercase tracking-wider text-xs font-semibold mb-1">Office Address</strong>
+                      1200 Legal Avenue, Suite 400<br/>New York, NY 10001
+                    </div>
+                    <div>
+                      <strong className="block text-[#0d131f] uppercase tracking-wider text-xs font-semibold mb-1">Direct Line</strong>
+                      (555) 123-4567
+                    </div>
+                    <div>
+                      <strong className="block text-[#0d131f] uppercase tracking-wider text-xs font-semibold mb-1">Email</strong>
+                      contact@carolsmithpllc.com
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-[#f5f4f0] p-10">
+                  <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">Full Name</label>
+                      <input type="text" className="w-full bg-white border border-gray-300 p-3 text-sm focus:outline-none focus:border-[#d3b68f]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">Email Address</label>
+                      <input type="email" className="w-full bg-white border border-gray-300 p-3 text-sm focus:outline-none focus:border-[#d3b68f]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">Inquiry Type</label>
+                      <select className="w-full bg-white border border-gray-300 p-3 text-sm focus:outline-none focus:border-[#d3b68f] appearance-none rounded-none">
+                        <option>Real Estate Law</option>
+                        <option>Corporate Counsel</option>
+                        <option>Civil Litigation</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">Message</label>
+                      <textarea rows="4" className="w-full bg-white border border-gray-300 p-3 text-sm focus:outline-none focus:border-[#d3b68f] resize-none"></textarea>
+                    </div>
+                    <button className="bg-[#0d131f] text-white w-full py-4 text-xs tracking-widest uppercase hover:bg-[#d3b68f] hover:text-[#0d131f] transition-colors">
+                      Submit Request
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          );
+
+          const LoginPage = () => (
+            <div className="min-h-[70vh] flex items-center justify-center bg-[#f5f4f0] py-24 animate-fade-in">
+              <div className="max-w-md w-full bg-white p-10 shadow-sm border border-gray-200 text-center">
+                <div className="mb-10">
+                  <h2 className="text-3xl font-serif text-[#0d131f] mb-2">CLIENT PORTAL DEMO</h2>
+                  <p className="text-xs uppercase tracking-widest text-gray-500">Interactive Preview</p>
+                </div>
+                
+                <button onClick={handleLogin} className="bg-[#0d131f] text-white w-full py-4 mt-4 text-xs tracking-widest uppercase hover:bg-[#d3b68f] hover:text-[#0d131f] transition-colors flex justify-center items-center gap-2">
+                  Explore the sample portal here <ArrowRight size={16} />
+                </button>
+                
+                <div className="mt-8 pt-6 border-t border-gray-100 text-center text-xs text-gray-500">
+                  This is a simulated interactive demo of the Carol & Smith PLLC client portal designed to preview client functionality.
+                </div>
+              </div>
+            </div>
+          );
+
+          // --- PORTAL COMPONENTS ---
+          
+          const PortalLayout = ({ children }) => {
+            if (!user) {
+              setTimeout(() => navigate('login'), 0);
+              return null;
+            }
+
+            return (
+              <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row animate-fade-in border-t border-gray-200">
+                <aside className="w-full md:w-64 bg-[#0d131f] text-gray-300 md:min-h-[80vh] flex flex-col shadow-inner">
+                  <div className="p-6 border-b border-[#2a3441]">
+                    <p className="text-xs uppercase tracking-widest text-gray-500 mb-1">Welcome back,</p>
+                    <p className="text-lg font-serif text-white">{user.name}</p>
+                  </div>
+                  <nav className="flex-1 py-4">
+                    <button onClick={() => navigate('portal-cases')} className={`w-full text-left px-6 py-4 text-sm flex items-center gap-3 transition-colors ${currentPage === 'portal-cases' ? 'bg-[#1a2538] text-white border-l-2 border-[#d3b68f]' : 'hover:bg-[#1a2538] hover:text-white border-l-2 border-transparent'}`}>
+                      <Gavel size={18} /> Legal Matters
+                    </button>
+                    <button onClick={() => navigate('portal-docs')} className={`w-full text-left px-6 py-4 text-sm flex items-center gap-3 transition-colors ${currentPage === 'portal-docs' ? 'bg-[#1a2538] text-white border-l-2 border-[#d3b68f]' : 'hover:bg-[#1a2538] hover:text-white border-l-2 border-transparent'}`}>
+                      <FileText size={18} /> Documents
+                    </button>
+                    <button onClick={() => navigate('portal-billing')} className={`w-full text-left px-6 py-4 text-sm flex items-center gap-3 transition-colors ${currentPage === 'portal-billing' ? 'bg-[#1a2538] text-white border-l-2 border-[#d3b68f]' : 'hover:bg-[#1a2538] hover:text-white border-l-2 border-transparent'}`}>
+                      <CreditCard size={18} /> Billing & Invoices
+                    </button>
+                    <button onClick={() => navigate('portal-profile')} className={`w-full text-left px-6 py-4 text-sm flex items-center gap-3 transition-colors ${currentPage === 'portal-profile' ? 'bg-[#1a2538] text-white border-l-2 border-[#d3b68f]' : 'hover:bg-[#1a2538] hover:text-white border-l-2 border-transparent'}`}>
+                      <Settings size={18} /> Settings
+                    </button>
+                  </nav>
+                  <div className="p-4 border-t border-[#2a3441]">
+                    <button onClick={handleLogout} className="w-full text-left px-4 py-3 text-sm text-[#d3b68f] hover:text-white flex items-center gap-3 transition-colors">
+                      <LogOut size={18} /> Secure Logout
+                    </button>
+                  </div>
+                </aside>
+
+                <main className="flex-1 p-6 md:p-10 bg-gray-50">
+                  <div className="max-w-5xl mx-auto">
+                    {children}
+                  </div>
+                </main>
+              </div>
+            );
+          };
+
+          const PortalCases = () => (
+            <PortalLayout>
+              <div className="flex justify-between items-end mb-8 border-b border-gray-200 pb-4">
+                <div>
+                  <h2 className="text-3xl font-serif text-[#0d131f]">Active Matters</h2>
+                  <p className="text-sm text-gray-500 mt-1 font-light">Track the status of your ongoing legal cases.</p>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                {[
+                  { id: 'C-2026-001', name: 'Commercial Lease Agreement - 42nd St', type: 'Real Estate', status: 'In Review', date: 'Oct 12, 2026', icon: Landmark },
+                  { id: 'C-2026-045', name: 'Doe vs. Apex Corp', type: 'Litigation', status: 'Discovery Phase', date: 'Sep 28, 2026', icon: Gavel },
+                ].map((item, idx) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={idx} className="bg-white border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                      <div className="flex justify-between items-start">
+                        <div className="flex gap-4 items-start">
+                          <div className="p-3 bg-[#f5f4f0] text-[#0d131f] border border-gray-100">
+                            <Icon size={24} strokeWidth={1} />
+                          </div>
+                          <div>
+                            <span className="text-xs uppercase tracking-widest text-gray-400 mb-1 block">Case Ref: {item.id}</span>
+                            <h3 className="text-lg font-serif text-[#0d131f] mb-1">{item.name}</h3>
+                            <p className="text-sm text-gray-500 font-light">{item.type} • Last updated: {item.date}</p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs border uppercase tracking-wider ${item.status === 'In Review' ? 'bg-[#fdfbf7] border-[#d3b68f] text-[#b08d5b]' : 'bg-blue-50 border-blue-200 text-blue-700'}`}>
+                            {item.status === 'In Review' ? <Clock size={12} /> : <CheckCircle size={12} />}
+                            {item.status}
+                          </span>
+                          <button className="mt-4 text-xs font-semibold text-[#0d131f] hover:text-[#d3b68f] uppercase tracking-widest flex items-center gap-1">
+                            View Details <ChevronRight size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </PortalLayout>
+          );
+
+          const PortalDocs = () => {
+            const [uploading, setUploading] = useState(false);
+            const [docs, setDocs] = useState([
+              { name: 'Initial_Draft_Lease_v2.pdf', date: 'Oct 14, 2026', size: '2.4 MB', type: 'Draft' },
+              { name: 'Opposing_Counsel_Response.pdf', date: 'Oct 10, 2026', size: '1.1 MB', type: 'Filing' },
+              { name: 'Executed_NDA_ApexCorp.pdf', date: 'Sep 05, 2026', size: '840 KB', type: 'Final' }
+            ]);
+            const [readingDoc, setReadingDoc] = useState(null);
+
+            const handleUpload = () => {
+              setUploading(true);
+              setTimeout(() => {
+                setDocs([{ name: 'Newly_Uploaded_Document.pdf', date: 'Today', size: '1.8 MB', type: 'Client Upload' }, ...docs]);
+                setUploading(false);
+              }, 1500);
+            };
+
+            return (
+              <PortalLayout>
+                {readingDoc && (
+                  <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4 sm:p-6">
+                    <div className="bg-white w-full max-w-4xl h-[80vh] flex flex-col shadow-2xl">
+                      <div className="flex justify-between items-center p-4 border-b border-gray-200 bg-[#f5f4f0]">
+                        <div className="flex items-center gap-2">
+                          <FileText size={20} className="text-[#0d131f]" />
+                          <h3 className="font-serif text-lg">{readingDoc.name}</h3>
+                        </div>
+                        <button onClick={() => setReadingDoc(null)} className="text-gray-500 hover:text-black">
+                          <X size={24} />
+                        </button>
+                      </div>
+                      <div className="flex-1 p-8 overflow-y-auto font-serif text-justify bg-gray-50">
+                        <div className="max-w-2xl mx-auto bg-white p-12 shadow-sm border border-gray-200 min-h-full">
+                          <h1 className="text-2xl mb-8 text-center uppercase tracking-widest border-b pb-4">Confidential Legal Document</h1>
+                          <p className="mb-4">This document constitutes a simulated legal agreement for the purposes of demonstrating the client portal interface. In a production environment, this area would render a secure PDF viewer containing actual case materials.</p>
+                          <p className="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                          <p className="mb-4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                          <div className="mt-16 flex justify-between border-t pt-8">
+                             <div>
+                               <div className="w-48 border-b border-black mb-2 h-8"></div>
+                               <p className="text-sm uppercase tracking-widest">Client Signature</p>
+                             </div>
+                             <div>
+                               <div className="w-48 border-b border-black mb-2 h-8"></div>
+                               <p className="text-sm uppercase tracking-widest">Date</p>
+                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 border-b border-gray-200 pb-4 gap-4">
+                  <div>
+                    <h2 className="text-3xl font-serif text-[#0d131f]">Document Center</h2>
+                    <p className="text-sm text-gray-500 mt-1 font-light">Securely view, download, and upload case files.</p>
+                  </div>
+                  <button 
+                    onClick={handleUpload} 
+                    disabled={uploading}
+                    className="bg-[#0d131f] text-white px-6 py-2.5 text-xs tracking-widest uppercase rounded-none hover:bg-[#d3b68f] hover:text-[#0d131f] transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {uploading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Upload size={16} />}
+                    {uploading ? 'Uploading...' : 'Upload File'}
+                  </button>
+                </div>
+
+                <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-[#f5f4f0] border-b border-gray-200 text-xs uppercase tracking-widest text-gray-500">
+                        <th className="py-4 px-6 font-semibold">Document Name</th>
+                        <th className="py-4 px-6 font-semibold hidden md:table-cell">Type</th>
+                        <th className="py-4 px-6 font-semibold hidden sm:table-cell">Date Modified</th>
+                        <th className="py-4 px-6 font-semibold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {docs.map((doc, idx) => (
+                        <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors group">
+                          <td className="py-4 px-6">
+                            <div className="flex items-center gap-3">
+                              <FileText size={18} className="text-gray-400 group-hover:text-[#d3b68f] transition-colors" />
+                              <span className="font-medium text-sm text-[#0d131f]">{doc.name}</span>
+                              <span className="text-xs text-gray-400 sm:hidden block mt-1">{doc.size}</span>
+                            </div>
+                          </td>
+                          <td className="py-4 px-6 hidden md:table-cell">
+                            <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-sm border border-gray-200">
+                              {doc.type}
+                            </span>
+                          </td>
+                          <td className="py-4 px-6 hidden sm:table-cell">
+                            <span className="text-sm text-gray-500">{doc.date}</span>
+                            <span className="text-xs text-gray-400 block mt-0.5">{doc.size}</span>
+                          </td>
+                          <td className="py-4 px-6 text-right">
+                            <button onClick={() => setReadingDoc(doc)} className="text-xs font-semibold text-[#0d131f] hover:text-[#d3b68f] uppercase tracking-widest inline-flex items-center gap-1">
+                              <Eye size={14} /> View
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </PortalLayout>
+            );
+          };
+
+          const PortalBilling = () => (
+            <PortalLayout>
+              <div className="flex justify-between items-end mb-8 border-b border-gray-200 pb-4">
+                <div>
+                  <h2 className="text-3xl font-serif text-[#0d131f]">Billing & Invoices</h2>
+                  <p className="text-sm text-gray-500 mt-1 font-light">View your balance and payment history.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div className="bg-[#0d131f] text-white p-6 border border-[#2a3441]">
+                  <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">Current Balance</p>
+                  <p className="text-4xl font-serif">$2,450.00</p>
+                  <button className="mt-6 w-full bg-[#d3b68f] text-[#0d131f] py-3 text-xs tracking-widest uppercase font-semibold hover:bg-white transition-colors">
+                    Make a Payment
+                  </button>
+                </div>
+                <div className="bg-white p-6 border border-gray-200 flex flex-col justify-center">
+                  <p className="text-xs uppercase tracking-widest text-gray-500 mb-2">Last Payment</p>
+                  <p className="text-2xl font-serif text-[#0d131f]">$1,500.00</p>
+                  <p className="text-sm text-gray-400 mt-1">Received on Sep 15, 2026</p>
+                </div>
+                <div className="bg-white p-6 border border-gray-200 flex flex-col justify-center">
+                  <p className="text-xs uppercase tracking-widest text-gray-500 mb-2">Retainer Status</p>
+                  <p className="text-2xl font-serif text-[#0d131f]">Active</p>
+                  <p className="text-sm text-[#b08d5b] mt-1">$5,000.00 remaining</p>
+                </div>
+              </div>
+
+              <h3 className="text-lg font-serif text-[#0d131f] mb-4">Recent Invoices</h3>
+              <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-[#f5f4f0] border-b border-gray-200 text-xs uppercase tracking-widest text-gray-500">
+                      <th className="py-4 px-6 font-semibold">Invoice #</th>
+                      <th className="py-4 px-6 font-semibold">Date</th>
+                      <th className="py-4 px-6 font-semibold">Amount</th>
+                      <th className="py-4 px-6 font-semibold">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-gray-100">
+                      <td className="py-4 px-6 font-medium text-sm">INV-2026-089</td>
+                      <td className="py-4 px-6 text-sm text-gray-500">Oct 01, 2026</td>
+                      <td className="py-4 px-6 text-sm font-medium">$2,450.00</td>
+                      <td className="py-4 px-6">
+                        <span className="inline-block px-2 py-1 bg-red-50 text-red-700 border border-red-200 text-xs uppercase tracking-wider">Unpaid</span>
+                      </td>
+                    </tr>
+                    <tr className="border-b border-gray-100">
+                      <td className="py-4 px-6 font-medium text-sm">INV-2026-042</td>
+                      <td className="py-4 px-6 text-sm text-gray-500">Sep 01, 2026</td>
+                      <td className="py-4 px-6 text-sm font-medium">$1,500.00</td>
+                      <td className="py-4 px-6">
+                        <span className="inline-block px-2 py-1 bg-green-50 text-green-700 border border-green-200 text-xs uppercase tracking-wider">Paid</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </PortalLayout>
+          );
+
+          const PortalProfile = () => (
+            <PortalLayout>
+              <div className="flex justify-between items-end mb-8 border-b border-gray-200 pb-4">
+                <div>
+                  <h2 className="text-3xl font-serif text-[#0d131f]">Profile Settings</h2>
+                  <p className="text-sm text-gray-500 mt-1 font-light">Manage your contact information and preferences.</p>
+                </div>
+              </div>
+
+              <div className="bg-white border border-gray-200 p-8 shadow-sm max-w-2xl">
+                <form className="space-y-6" onSubmit={e => e.preventDefault()}>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">First Name</label>
+                      <input type="text" defaultValue="Jonathan" className="w-full bg-gray-50 border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#d3b68f]" />
+                    </div>
+                    <div>
+                      <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">Last Name</label>
+                      <input type="text" defaultValue="Doe" className="w-full bg-gray-50 border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#d3b68f]" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">Email Address</label>
+                    <input type="email" defaultValue="jonathan.doe@example.com" className="w-full bg-gray-50 border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#d3b68f]" />
+                  </div>
+                  <div>
+                    <label className="block text-xs uppercase tracking-widest text-[#0d131f] mb-2">Phone Number</label>
+                    <input type="tel" defaultValue="(555) 987-6543" className="w-full bg-gray-50 border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#d3b68f]" />
+                  </div>
+                  <div className="pt-4 border-t border-gray-100">
+                    <button className="bg-[#0d131f] text-white px-8 py-3 text-xs tracking-widest uppercase hover:bg-[#d3b68f] hover:text-[#0d131f] transition-colors">
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </PortalLayout>
+          );
+
+          // --- ROUTER ---
+          const renderPage = () => {
+            switch (currentPage) {
+              case 'home': return <HomePage />;
+              case 'about': return <AboutPage />;
+              case 'services': 
+                return (
+                  <div className="animate-fade-in bg-[#f5f4f0] py-24 min-h-[70vh]">
+                    <div className="max-w-4xl mx-auto px-4 text-center mb-16">
+                      <h1 className="text-5xl font-serif text-[#0d131f] mb-6">PRACTICE AREAS</h1>
+                      <div className="w-16 h-px bg-[#d3b68f] mx-auto"></div>
+                    </div>
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {SERVICES.map((s, idx) => {
+                        const Icon = s.icon;
+                        return (
+                          <div key={idx} onClick={() => navigate('serviceDetail', s.id)} className="bg-white p-10 border border-transparent hover:border-[#d3b68f] cursor-pointer transition-colors shadow-sm text-center flex flex-col items-center">
+                            <div className="w-16 h-16 bg-[#1a2538] text-[#d3b68f] flex items-center justify-center mb-6">
+                              <Icon size={28} strokeWidth={1} />
+                            </div>
+                            <h3 className="font-serif text-2xl text-[#0d131f] mb-4">{s.title}</h3>
+                            <p className="text-gray-500 font-light text-sm mb-6">{s.desc}</p>
+                            <span className="text-xs uppercase tracking-widest font-semibold text-[#0d131f] mt-auto">Learn More &rarr;</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                );
+              case 'serviceDetail': return <ServiceDetailPage />;
+              case 'contact': return <ContactPage />;
+              case 'login': return <LoginPage />;
+              case 'portal-cases': return <PortalCases />;
+              case 'portal-docs': return <PortalDocs />;
+              case 'portal-billing': return <PortalBilling />;
+              case 'portal-profile': return <PortalProfile />;
+              default: return <HomePage />;
+            }
+          };
+
+          return (
+            <React.Fragment>
+              <Navbar />
+              <main className="min-h-[70vh]">
+                {renderPage()}
+              </main>
+              {!currentPage.startsWith('portal-') && <Footer />}
+            </React.Fragment>
+          );
+        }
+
+        // --- RENDER APP ---
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexa ServicePortal — LCEC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== Navigation Tree Data ===== -->
+  <script>
+    var I = "https://cdn.jsdelivr.net/gh/lucaburgio/iconoir@main/icons/regular/";
+    window.LCEC_NAV_TREE = [
+      {
+        "id": 1, "department": "IT", "level": 1,
+        "name": "IT Support", "friendly_name": "IT Support",
+        "icon": I+"pc-check.svg", "accent": "#0072CE", "target_url": null,
+        "children": [
+          {
+            "id": 8, "department": "IT", "level": 2,
+            "name": "Hardware and Devices", "friendly_name": "Help with my hardware",
+            "icon": I+"laptop.svg", "accent": "#2563EB", "target_url": null,
+            "children": [
+              { "id": 19, "department": "IT", "level": 3, "name": "Computer Issues-Requests", "friendly_name": "Fix my computer issue", "icon": I+"computer.svg", "accent": "#3B82F6", "target_url": "sample-form.com", "children": [] },
+              { "id": 20, "department": "IT", "level": 3, "name": "Monitor/Peripheral Problems", "friendly_name": "Help with my screen or gear", "icon": I+"multi-window.svg", "accent": "#6366F1", "target_url": "sample-form.com", "children": [] },
+              { "id": 21, "department": "IT", "level": 3, "name": "Printer/Scanner", "friendly_name": "Printer/Scanner", "icon": I+"printer.svg", "accent": "#8B5CF6", "target_url": "sample-form.com", "children": [] },
+              { "id": 22, "department": "IT", "level": 3, "name": "Mobile Device", "friendly_name": "Help with my phone", "icon": I+"smartphone-device.svg", "accent": "#06B6D4", "target_url": "sample-form.com", "children": [] },
+              { "id": 23, "department": "IT", "level": 3, "name": "New Hardware Request", "friendly_name": "I need new gear", "icon": I+"cart.svg", "accent": "#10B981", "target_url": "sample-form.com", "children": [] },
+              { "id": 24, "department": "IT", "level": 3, "name": "Hardware repair/replacement", "friendly_name": "Fix my broken hardware", "icon": I+"wrench.svg", "accent": "#F59E0B", "target_url": "sample-form.com", "children": [] }
+            ]
+          },
+          {
+            "id": 9, "department": "IT", "level": 2,
+            "name": "Software and Applications", "friendly_name": "Help with Software or Apps",
+            "icon": I+"app-window.svg", "accent": "#7C5CFC", "target_url": null,
+            "children": [
+              { "id": 15, "department": "IT", "level": 3, "name": "Install/Update Software", "friendly_name": "Help me install or update software", "icon": I+"download.svg", "accent": "#2563EB", "target_url": "sample-form.com", "children": [] },
+              { "id": 16, "department": "IT", "level": 3, "name": "Application not working", "friendly_name": "An app isn't working", "icon": I+"warning-triangle.svg", "accent": "#EF4444", "target_url": "sample-form.com", "children": [] },
+              { "id": 17, "department": "IT", "level": 3, "name": "Microsoft/M365 Issues", "friendly_name": "Help with Microsoft Apps", "icon": I+"windows.svg", "accent": "#0072CE", "target_url": "sample-form.com", "children": [] },
+              { "id": 18, "department": "IT", "level": 3, "name": "App Request", "friendly_name": "I need a new app", "icon": I+"plus-circle.svg", "accent": "#10B981", "target_url": "sample-form.com", "children": [] }
+            ]
+          },
+          {
+            "id": 10, "department": "IT", "level": 2,
+            "name": "Network and Connectivity", "friendly_name": "Network and Connectivity",
+            "icon": I+"network.svg", "accent": "#00B4D8", "target_url": null,
+            "children": [
+              { "id": 25, "department": "IT", "level": 3, "name": "WiFi Not Connecting", "friendly_name": "Help me connect to WiFi", "icon": I+"wifi-off.svg", "accent": "#EF4444", "target_url": "sample-form.com", "children": [] },
+              { "id": 26, "department": "IT", "level": 3, "name": "Slow Internet", "friendly_name": "My internet is too slow", "icon": I+"timer.svg", "accent": "#F59E0B", "target_url": "sample-form.com", "children": [] },
+              { "id": 27, "department": "IT", "level": 3, "name": "VPN/Remote Access", "friendly_name": "Help me work from home", "icon": I+"cloud.svg", "accent": "#6366F1", "target_url": "sample-form.com", "children": [] },
+              { "id": 28, "department": "IT", "level": 3, "name": "Email Connectivity", "friendly_name": "Help me with my email", "icon": I+"send.svg", "accent": "#0EA5E9", "target_url": "sample-form.com", "children": [] }
+            ]
+          },
+          {
+            "id": 11, "department": "IT", "level": 2,
+            "name": "Accounts and Access", "friendly_name": "Accounts and Access",
+            "icon": I+"user.svg", "accent": "#F472B6", "target_url": null,
+            "children": [
+              { "id": 29, "department": "IT", "level": 3, "name": "Reset Password", "friendly_name": "I need help logging in", "icon": I+"key.svg", "accent": "#F59E0B", "target_url": "sample-form.com", "children": [] },
+              { "id": 30, "department": "IT", "level": 3, "name": "Account Locked", "friendly_name": "I'm locked out", "icon": I+"lock.svg", "accent": "#EF4444", "target_url": "sample-form.com", "children": [] },
+              { "id": 31, "department": "IT", "level": 3, "name": "New user access", "friendly_name": "Add a new person", "icon": I+"user-plus.svg", "accent": "#10B981", "target_url": "sample-form.com", "children": [] },
+              { "id": 32, "department": "IT", "level": 3, "name": "Request Permissions", "friendly_name": "I need access permissions", "icon": I+"shield-check.svg", "accent": "#8B5CF6", "target_url": "sample-form.com", "children": [] },
+              { "id": 33, "department": "IT", "level": 3, "name": "MFA/Setup Issues", "friendly_name": "Help me with security setup", "icon": I+"fingerprint.svg", "accent": "#06B6D4", "target_url": "sample-form.com", "children": [] }
+            ]
+          },
+          {
+            "id": 12, "department": "IT", "level": 2,
+            "name": "Email and Collaboration", "friendly_name": "Email and Collaboration",
+            "icon": I+"mail.svg", "accent": "#FF6B6B", "target_url": null,
+            "children": [
+              { "id": 34, "department": "IT", "level": 3, "name": "Email not sending/receiving", "friendly_name": "My email isn't working", "icon": I+"warning-circle.svg", "accent": "#EF4444", "target_url": "sample-form.com", "children": [] },
+              { "id": 35, "department": "IT", "level": 3, "name": "Calendar issues", "friendly_name": "Help with my calendar", "icon": I+"calendar.svg", "accent": "#0EA5E9", "target_url": "sample-form.com", "children": [] },
+              { "id": 36, "department": "IT", "level": 3, "name": "Teams Problems", "friendly_name": "Help me with Teams", "icon": I+"chat-bubble.svg", "accent": "#6366F1", "target_url": "sample-form.com", "children": [] },
+              { "id": 37, "department": "IT", "level": 3, "name": "Zoom Problems", "friendly_name": "Fix my Zoom issues", "icon": I+"video-camera.svg", "accent": "#2563EB", "target_url": "sample-form.com", "children": [] },
+              { "id": 38, "department": "IT", "level": 3, "name": "Shared drive/file access", "friendly_name": "I need file access help", "icon": I+"folder.svg", "accent": "#F59E0B", "target_url": "sample-form.com", "children": [] }
+            ]
+          },
+          {
+            "id": 13, "department": "IT", "level": 2,
+            "name": "IT Professional Services", "friendly_name": "IT Professional Services",
+            "icon": I+"briefcase.svg", "accent": "#FFB347", "target_url": null,
+            "children": [
+              { "id": 39, "department": "IT", "level": 3, "name": "BI (Dashboards and Reporting)", "friendly_name": "Help with my data reports", "icon": I+"graph-up.svg", "accent": "#10B981", "target_url": "sample-form.com", "children": [] },
+              { "id": 40, "department": "IT", "level": 3, "name": "Solutions Delivery", "friendly_name": "Help me build a solution", "icon": I+"light-bulb.svg", "accent": "#F59E0B", "target_url": "sample-form.com", "children": [] },
+              { "id": 41, "department": "IT", "level": 3, "name": "Other/General Help", "friendly_name": "I need something else", "icon": I+"headset.svg", "accent": "#64748B", "target_url": "sample-form.com", "children": [] }
+            ]
+          },
+          {
+            "id": 14, "department": "IT", "level": 2,
+            "name": "Other/General", "friendly_name": "Other/General",
+            "icon": I+"more-horiz.svg", "accent": "#64748B", "target_url": null, "children": []
+          }
+        ]
+      },
+      { "id": 2, "department": "Facilities", "level": 1, "name": "Facilities", "friendly_name": "Facilities", "icon": I+"building.svg", "accent": "#10B981", "target_url": "lcec.net", "children": [] },
+      { "id": 3, "department": "HR", "level": 1, "name": "HR", "friendly_name": "HR", "icon": I+"group.svg", "accent": "#7C5CFC", "target_url": "lcec.net", "children": [] },
+      { "id": 4, "department": "Project Management", "level": 1, "name": "Project Management", "friendly_name": "Project Management", "icon": I+"kanban-board.svg", "accent": "#FFB347", "target_url": "lcec.net", "children": [] },
+      { "id": 5, "department": "Finance", "level": 1, "name": "Finance", "friendly_name": "Finance", "icon": I+"coins.svg", "accent": "#00B4D8", "target_url": "lcec.net", "children": [] },
+      { "id": 6, "department": "PR", "level": 1, "name": "PR", "friendly_name": "PR", "icon": I+"megaphone.svg", "accent": "#F472B6", "target_url": "lcec.net", "children": [] },
+      { "id": 7, "department": "Security", "level": 1, "name": "Security", "friendly_name": "Security", "icon": I+"shield.svg", "accent": "#FF6B6B", "target_url": "lcec.net", "children": [] }
+    ];
+  </script>
+
+  <!-- ===== Top Nav ===== -->
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <div class="nav-brand">
+        <img class="nav-brand-logo" src="lcec-logo.png" alt="LCEC Logo">
+        <span class="nav-brand-text">Nexa ServicePortal</span>
+      </div>
+      <div class="nav-search">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" placeholder="Search services or issues..." autocomplete="off">
+        <div class="search-dropdown" id="search-dropdown"></div>
+      </div>
+      <div class="nav-user">
+        <span class="nav-user-name">Logged in</span>
+        <div class="nav-user-avatar">EM</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero" id="hero">
+    <!-- Animated background orbs -->
+    <div class="hero-orb hero-orb--1"></div>
+    <div class="hero-orb hero-orb--2"></div>
+    <div class="hero-orb hero-orb--3"></div>
+
+    <div class="hero-inner">
+      <!-- Info Bar -->
+      <div class="info-bar">
+        <span class="info-item">Business Hours: 8 A.M. &ndash; 5 P.M.</span>
+        <span class="info-separator"></span>
+        <span class="info-item">Next Holiday: <strong>&nbsp;TBD</strong></span>
+        <span class="info-separator"></span>
+        <span class="info-item">System Status: <strong>&nbsp;All Systems Normal</strong> <span class="status-dot green"></span></span>
+      </div>
+
+      <!-- Welcome -->
+      <div class="hero-welcome">
+        <p class="hero-welcome-sub">Welcome, <span id="user-display-hero">Employee</span></p>
+        <h1 class="hero-welcome-heading">What can we help you with today?</h1>
+      </div>
+    </div>
+
+    <!-- Curved wave divider -->
+    <svg class="hero-wave" viewBox="0 0 1440 48" preserveAspectRatio="none">
+      <path d="M0,32 C360,56 720,0 1440,32 L1440,48 L0,48 Z" fill="#F8FAFC"/>
+    </svg>
+  </section>
+
+  <!-- ===== Main App Container ===== -->
+  <main class="main-content" id="app"></main>
+
+  <!-- ===== Modal ===== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal"></div>
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">LCEC &mdash; Lee County Electric Cooperative</span>
+      <span>&copy; 2026 LCEC. Internal use only.</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
